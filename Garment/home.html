@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PT. YOUNGHYUN STAR - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="toggle-btn" onclick="toggleSidebar()">☰</div>
+    <div class="sidebar" id="sidebar">
+        <div class="close-btn" onclick="toggleSidebar()">✖</div>
+        <a href="#" onclick="loadPage('po_recap.html')">PO.RECAP</a>
+    </div>
+    <div class="content" onclick="closeSidebar()">
+        <h1>PT. YOUNGHYUN STAR</h1>
+        <a href="php/logout.php" class="logout">Logout</a>
+        <div id="main-content"></div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
