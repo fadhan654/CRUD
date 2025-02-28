@@ -10,13 +10,19 @@
     <div class="login-container">
         <h2>Login</h2>
         <form id="loginForm" action="php/login.php" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <label for="role">Select Role:</label>
-            <select name="role" id="role" required>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            
+            <label for="role">Role</label>
+            <select id="role" name="role" required>
+                <option value="" disabled selected>Select your role</option>
                 <option value="admin">Admin</option>
                 <option value="user">User </option>
             </select>
+            
             <button type="submit">Login</button>
         </form>
         <p id="error-message"></p>

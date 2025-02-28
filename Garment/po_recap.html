@@ -3,25 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PO Recap</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>PO Recap | CRUD</title>
+
+    <!-- AdminLTE & Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+
 </head>
-<body>
-    <h1>PO Recap</h1>
-    <div id="po-table"></div>
-    <div id="admin-actions" style="display: none;">
-        <h2>Admin Actions</h2>
-        <form id="add-form">
-            <input type="text" name="po_no" placeholder="PO No." required>
-            <input type="text" name="color" placeholder="Color" required>
-            <input type="text" name="style_no" placeholder="Style #" required>
-            <input type="text" name="code_dest" placeholder="Code Dest" required>
-            <input type="text" name="size" placeholder="Size" required>
-            <input type="number" name="qty" placeholder="Qty" required>
-            <input type="text" name="portion_value" placeholder="portion_value" required>
-            <button type="submit">Add PO.RECAP</button>
-        </form>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a href="home.html" class="btn btn-secondary">Kembali</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="container-fluid">
+                    <h1 class="mt-4">PO Recap</h1>
+
+                    <!-- Tombol Tambah (Dihapus jika bukan admin) -->
+                    <button class="btn btn-primary mb-3" id="addPoButton" onclick="window.location.href='add_po_recap.html'">
+                        <i class="fas fa-plus"></i> Tambah PO
+                    </button>
+
+                    <!-- Tabel -->
+                    <table id="poTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>PO No.</th>
+                                <th>Color</th>
+                                <th>Style #</th>
+                                <th>Code Dest</th>
+                                <th>Packing</th>
+                                <th>Size</th>
+                                <th>Qty</th>
+                                <th>Portion</th>
+                                <th>Actions</th> <!-- Kolom aksi tetap ada -->
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
     </div>
-    <script src="js/script.js"></script>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editPoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit PO Recap</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="editPoForm">
+                        <input type="hidden" id="edit_id" name="id">
+                        <div class="form-group">
+                            <label>PO No</label>
+                            <input type="text" id="edit_po_no" name="po_no" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Color</label>
+                            <input type="text" id="edit_color" name="color" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Style #</label>
+                            <input type="text" id="edit_style_no" name="style_no" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Code Dest</label>
+                            <input type="text" id="edit_code_dest" name="code_dest" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Packing</label>
+                            <input type="text" id="edit_packing" name="packing" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Size</label>
+                            <input type="text" id="edit_size" name="size" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Qty</label>
+                            <input type="number" id="edit_qty" name="qty" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Portion</label>
+                            <input type="text" id="edit_portion_value" name="portion_value" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">Simpan Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            let table = $('#poTable').DataTable({
+                "ajax": "php/get_po_recap.php",
+                "columns": [
+                    { "data": "po_no" },
+                    { "data": "color" },
+                    { "data": "style_no" },
+                    { "data": "code_dest" },
+                    { "data": "packing" },
+                    { "data": "size" },
+                    { "data": "qty" },
+                    { "data": "portion_value" },
+                    {
+                        "data": null,
+                        "render": function(data, type, row) {
+                            return `
+                                <button class="btn btn-warning btn-sm edit-btn" data-id="${row.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="${row.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            `;
+                        }
+                    }
+                ]
+            });
+
+            // Edit Data
+            $('#poTable tbody').on('click', '.edit-btn', function() {
+                let id = $(this).data('id');
+
+                $.get("php/get_po_recap.php", function(data) {
+                    let rowData = data.data.find(item => item.id == id);
+
+                    if (rowData) {
+                        $('#edit_id').val(rowData.id);
+                        $('#edit_po_no').val(rowData.po_no);
+                        $('#edit_color').val(rowData.color);
+                        $('#edit_style_no').val(rowData.style_no);
+                        $('#edit_code_dest').val(rowData.code_dest);
+                        $('#edit_packing').val(rowData.packing);
+                        $('#edit_size').val(rowData.size);
+                        $('#edit_qty').val(rowData.qty);
+                        $('#edit_portion_value').val(rowData.portion_value);
+
+                        $('#editPoModal').modal('show');
+                    }
+                }, "json");
+            });
+
+            $('#editPoForm').on('submit', function(e) {
+                e.preventDefault();
+                let formData = $(this).serialize();
+
+                $.post("php/update_po_recap.php", formData, function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: response
+                    });
+                    $('#editPoModal').modal('hide');
+                    table.ajax.reload();
+                });
+            });
+
+            $('#poTable tbody').on('click', '.delete-btn', function() {
+                let id = $(this).data('id');
+                Swal.fire({
+                    title: 'Yakin ingin menghapus?',
+                    text: "Data yang dihapus tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.post("php/delete_po_recap.php", { id: id }, function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response
+                            });
+                            table.ajax.reload();
+                        });
+                    }
+                });
+            });
+
+            // Cek peran pengguna
+            fetch('php/check_role.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.role !== 'admin') {
+                        // Hapus tombol tambah
+                        document.getElementById('addPoButton').style.display = 'none';
+
+                        // Sembunyikan kolom aksi
+                        table.column(8).visible(false); // Menghapus kolom aksi
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
 </body>
 </html>
