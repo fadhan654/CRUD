@@ -34,19 +34,47 @@
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+
+                        <!-- Dashboard -->
                         <li class="nav-item">
                             <a href="home.html" class="nav-link active">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="po_recap.html" class="nav-link">
+
+                        <!-- PO Recap dengan Sub-menu -->
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-table"></i>
-                                <p>PO Recap</p>
+                                <p>
+                                    PO Recap
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="po_recap.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Semua Data</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="po_recap_walmart.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Walmart</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="po_recap_macys.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Macy's</p>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+
                     </ul>
                 </nav>
             </div>
